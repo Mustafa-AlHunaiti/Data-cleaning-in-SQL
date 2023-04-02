@@ -126,10 +126,49 @@ FROM PortfolioProject..NashvilleHousing
 
 
 
+
+SELECT OwnerAddress
+FROM PortfolioProject..NashvilleHousing
+
+
+
+SELECT
+PARSENAME(REPLACE(OwnerAddress, ',', '.'), 3) 
+, PARSENAME(REPLACE(OwnerAddress, ',', '.'), 2) 
+, PARSENAME(REPLACE(OwnerAddress, ',', '.'), 1)
+FROM PortfolioProject..NashvilleHousing
+
+
+
+ALTER TABLE PortfolioProject..NashvilleHousing
+ADD OwnerSplitAddress nvarchar(255) 
+
+UPDATE PortfolioProject..NashvilleHousing
+SET OwnerSplitAddress = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 3)
+
+ALTER TABLE PortfolioProject..NashvilleHousing
+ADD OwnerSplitCity nvarchar(255) 
+
+UPDATE PortfolioProject..NashvilleHousing
+SET OwnerSplitCity = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 2)
+
+ALTER TABLE PortfolioProject..NashvilleHousing
+ADD OwnerSplitState nvarchar(255) 
+
+UPDATE PortfolioProject..NashvilleHousing
+SET OwnerSplitState = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 1)
+
+
 --------------------------------------------------------------------------------------------------------------------------
 
 
 -- Change Y and N to Yes and No in "Sold as Vacant" field
+
+
+
+
+
+
 
 
 
