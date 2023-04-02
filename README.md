@@ -1,5 +1,5 @@
 # Data-cleaning-in-SQL
-
+The whole point of this project is to clean the data and make it more usable 
 
 ## My dataset is
 
