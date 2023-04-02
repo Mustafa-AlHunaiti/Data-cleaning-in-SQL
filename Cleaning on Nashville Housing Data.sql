@@ -90,7 +90,46 @@ WHERE a.PropertyAddress IS NULL
 */
 
 
+--------------------------------------------------------------------------------------------------------------------------
 
+
+-- Breaking out address into Individual Columns (Address, City, State)
+
+SELECT PropertyAddress
+FROM PortfolioProject..NashvilleHousing
+-- WHERE PropertyAddress IS NULL
+--ORDER BY ParcelID 
+
+
+SELECT SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) -1) AS Address -- The CHARINDEX() function searches for a substring in a string, and returns the position. If the substring is not found, this function returns 0.
+, SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) +1, LEN(PropertyAddress)) AS City
+FROM PortfolioProject..NashvilleHousing
+
+
+ALTER TABLE PortfolioProject..NashvilleHousing
+ADD PropertySplitAddress nvarchar(255) 
+
+UPDATE PortfolioProject..NashvilleHousing
+SET PropertySplitAddress = SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) -1)
+
+ALTER TABLE PortfolioProject..NashvilleHousing
+ADD PropertySplitCity nvarchar(255) 
+
+UPDATE PortfolioProject..NashvilleHousing
+SET PropertySplitCity = SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) +1, LEN(PropertyAddress))
+
+
+
+
+SELECT *
+FROM PortfolioProject..NashvilleHousing
+
+
+
+--------------------------------------------------------------------------------------------------------------------------
+
+
+-- Change Y and N to Yes and No in "Sold as Vacant" field
 
 
 
