@@ -159,20 +159,89 @@ UPDATE PortfolioProject..NashvilleHousing
 SET OwnerSplitState = PARSENAME(REPLACE(OwnerAddress, ',', '.'), 1)
 
 
+SELECT *
+FROM PortfolioProject..NashvilleHousing
+
+
 --------------------------------------------------------------------------------------------------------------------------
 
 
 -- Change Y and N to Yes and No in "Sold as Vacant" field
 
+SELECT DISTINCT(SoldAsVacant), COUNT(SoldAsVacant)
+FROM PortfolioProject..NashvilleHousing 
+GROUP BY SoldAsVacant
+ORDER BY 2
 
 
 
+SELECT SoldAsVacant
+,CASE 
+     WHEN SoldAsVacant = 'Y' THEN 'Yes'
+	 WHEN SoldAsVacant = 'N' THEN 'No'
+	 ELSE SoldAsVacant
+END
+FROM PortfolioProject..NashvilleHousing 
+WHERE SoldAsVacant = 'Y' OR SoldAsVacant = 'N'
+
+
+UPDATE PortfolioProject..NashvilleHousing 
+SET SoldAsVacant = 
+CASE 
+     WHEN SoldAsVacant = 'Y' THEN 'Yes'
+	 WHEN SoldAsVacant = 'N' THEN 'No'
+	 ELSE SoldAsVacant
+END
 
 
 
+--------------------------------------------------------------------------------------------------------------------------
 
 
+-- Remove Duplicates 
 
+/*
+WITH RowNumCTE AS
+(
+SELECT *,
+    ROW_NUMBER() OVER (
+	PARTITION BY ParcelID,
+	             PropertyAddress,
+				 SalePrice,
+				 SaleDate,
+				 LegalReference
+				 ORDER BY
+				 uniqueID
+				 ) row_num
+FROM PortfolioProject..NashvilleHousing
+--WHERE row_num > 1
+--ORDER BY ParcelID
+)
+SELECT *
+FROM RowNumCTE
+WHERE row_num > 1
+ORDER BY PropertyAddress
+*/
+
+WITH RowNumCTE AS
+(
+SELECT *,
+    ROW_NUMBER() OVER (
+	PARTITION BY ParcelID,
+	             PropertyAddress,
+				 SalePrice,
+				 SaleDate,
+				 LegalReference
+				 ORDER BY
+				 uniqueID
+				 ) row_num
+FROM PortfolioProject..NashvilleHousing
+--WHERE row_num > 1
+--ORDER BY ParcelID
+)
+DELETE
+FROM RowNumCTE
+WHERE row_num > 1
 
 
 
