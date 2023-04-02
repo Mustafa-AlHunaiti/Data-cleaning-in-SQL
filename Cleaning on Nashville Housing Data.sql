@@ -67,7 +67,7 @@ SELECT a.ParcelID, a.PropertyAddress, b.ParcelID, b.PropertyAddress, ISNULL(a.Pr
 FROM PortfolioProject..NashvilleHousing a
 JOIN PortfolioProject..NashvilleHousing b
 	ON a.ParcelID = b.ParcelID -- we said where the ParcelID is the same but it's not the same row 
-	AND a.[UniqueID ] <> b.[UniqueID ] -- we need to find a way to distinguish these(row 44 and 45) we can use UniqueID
+	AND a.[UniqueID ] <> b.[UniqueID ] -- we need to find a way to distinguish these(for example row 44 and 45) we can use UniqueID
 WHERE a.PropertyAddress IS NULL
 
 
@@ -78,6 +78,19 @@ JOIN PortfolioProject..NashvilleHousing b
 	ON a.ParcelID = b.ParcelID  
 	AND a.[UniqueID ] <> b.[UniqueID ]
 WHERE a.PropertyAddress IS NULL
+/* 
+if u wanted to do something like that 
+UPDATE a
+SET PropertyAddress = ISNULL(a.PropertyAddress, 'No Address')
+FROM PortfolioProject..NashvilleHousing a
+JOIN PortfolioProject..NashvilleHousing b
+	ON a.ParcelID = b.ParcelID  
+	AND a.[UniqueID ] <> b.[UniqueID ]
+WHERE a.PropertyAddress IS NULL
+*/
+
+
+
 
 
 
